@@ -18,6 +18,9 @@ raw = sys.argv[1:]
 
 # The variable currency_symbols consists of a dictionary created manually, with
 # information from http://www.xe.com/symbols.php and Wikipedia.
+# Edit June 12th: After uploading to Github I noticed some of the currency symbols are not displayed
+# correctly, despite working alright on my computer. Perhaps the currency symbol
+# categorization should be only limited to szmbols present in most fonts, like $, €, ¥, and £.
 currency_symbols = {"$":"AUD,CAD,HKD,MXN,NZD,SGD,USD", "€":"EUR", "¥":"CNY,JPY",
 "£":"GBP", "A$":'AUD', "лв":"BGN", "лв.":"BGN", "R$":"BRL", "Can$":"CAD",
 "C$":"CAD", "Fr.":"CHF", "SFr.":"CHF", "元":"CNY,HKD", "RMB":"CNY", "Kč":"CZK",
