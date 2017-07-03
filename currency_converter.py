@@ -1,21 +1,50 @@
-# The prerequisite for the user is to use a correct form of input (See line 3,
-# 4, and 5 below).
-# --amount 100.0 --input_currency EUR --output_currency CZK
-# --amount 0.9 --input_currency ¥ --output_currency AUD
-# --amount 10.92 --input_currency £
+# The script is meant to be used with a specific input, taking a) amount of 
+# an input currency, and an output currency code or symbol, or b) the amount
+# of an input currecy, its code/symbol and the output currencies' codes/symbols.
+
+# The script works in two ways:
+# 1) It can be used via a CLI (Command Line Interface) in the following format:
+# way/to/cnvrtr/currency_converter.py --amount 100.0 --input_currency EUR --output_currency CZK
+# way/to/cnvrtr/currency_converter.py --amount 0.9 --input_currency ¥ --output_currency AUD
+# way/to/cnvrtr/currency_converter.py --amount 10.92 --input_currency £
+
+# 2) By executing the script, an input field is activated, to which the user has to
+# type the GET request, in the following format:
+# GET /currency_converter?amount=100.0&input_currency=EUR&output_currency=CZK HTTP/1.1
+# GET /currency_converter?amount=0.9&input_currency=¥&output_currency=AUD HTTP/1.1
+# GET /currency_converter?amount=10.92&input_currency=£ HTTP/1.1
 
 # Three Python libraries are used: urllib to get data from a website that provides
 # currency rates from the European Central Bank, and json for work with the
-# required output format. The library sys is used only to get the input
-# from a command like "progeram.py --amount 10.0 --input_currency EUR --output_currency CZK",
-# however the input() method was prefered during coding. The currently active
-# option in this code is the sys.argv one on line 16, while the optional input()
-# method is commented on line 15.
+# required output format. The library sys is used only to get a user input via
+# the CLI.
+
+
 import urllib.request, json, sys
 
-# raw = input().split()
-raw = sys.argv[1:]
+raw = []
+if len(sys.argv) > 1:
+    # Get input from the command line, in case there is any...
+    raw = sys.argv[1:]
 
+else:
+    # ... or get input via the input() function, in the following format:
+    # GET /currency_converter?amount=10.92&input_currency=£ HTTP/1.1
+    try:
+        get_src = input().split()
+        if get_src[0]=="GET" and get_src[2]=="HTTP/1.1":
+            adr = get_src[1].split("?")[1].split("&")
+            aio = {}
+            for i in adr:
+                j = i.split("=")
+                for k in j:
+                    aio[j[0]] = j[1]
+            for key, value in aio.items():
+                raw.append("--" + key)
+                raw.append(value)
+    except NameError or IndexError:
+        print("Incorrect input!")
+    
 # The variable currency_symbols consists of a dictionary created manually, with
 # information from http://www.xe.com/symbols.php and Wikipedia.
 # Edit June 12th: After uploading to Github I noticed some of the currency symbols are not displayed
@@ -89,5 +118,5 @@ try:
 
 except urllib.error.HTTPError as e:
     print(e.code)
-except urllib.error.URLError as e:
+except urllib.error.URLError:
     print("Wrong URL")
