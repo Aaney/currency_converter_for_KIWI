@@ -6,4 +6,4 @@ Assignment link: https://gist.github.com/MichalCab/3c94130adf9ec0c486dfca8d0f01d
 
 Edit June 12th: After uploading to Github I noticed some of the currency symbols are not displayed correctly, despite working alright on my computer. Perhaps the currency symbol categorization should be only limited to symbols present in most fonts, like $, €, ¥, and £.
 
-Edit July 8th: Added a more or less working web API (using the accessible via the localhost after running the script) - still testing it though (it doesn't output a "pretty" json as the CLI, just an unindented string). The CLI works stil the same (OK).
+Edit July 8th: Added a more or less working web API (using the accessible via the localhost after running the script) - still testing it though (it doesn't output a "pretty" json as the CLI, just an unindented string). The CLI works still the same (OK).
