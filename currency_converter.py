@@ -164,7 +164,7 @@ if len(sys.argv) > 1:
 
 else:
     # ... or make a server and activate the web API - the code below is
-    # based on the same source as the myHandler class abowe, i.e. the following
+    # based on the same source as the myHandler class above, i.e. the following
     # website: https://www.acmesystems.it/python_httpd
 
     try:
