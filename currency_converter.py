@@ -6,9 +6,11 @@
 
 # The script works in two ways:
 # 1) It can be used via a CLI (Command Line Interface) in the following format:
-# way/to/cnvrtr/currency_converter.py --amount 100.0 --input_currency EUR --output_currency CZK
-# way/to/cnvrtr/currency_converter.py --amount 0.9 --input_currency ¥ --output_currency AUD
-# way/to/cnvrtr/currency_converter.py --amount 10.92 --input_currency £
+# C:\Projects\currency_converter.py --amount 100.0 --input_currency EUR --output_currency CZK
+# C:\Projects\currency_converter.py --amount 0.9 --input_currency ¥ --output_currency AUD
+# C:\Projects\currency_converter.py --amount 10.92 --input_currency £
+# The input to the Command Line then looks e.g. on Windows 10 as follows:
+# C:\Python\Python36\python.exe "C:\Projects\currency_converter.py" --amount 100.0 --input_currency EUR --output_currency CZK
 
 # 2) By executing the script, local web API is activated on the address localhost:8080,
 # to which the user has to add the GET request suffix, in the following format:
@@ -150,12 +152,6 @@ class myHandler(BaseHTTPRequestHandler):
             # not to print the error messages in the terminal (not sure at the moment how severe
             # issue this is).
             pass
-def app(env, start_response):
-    body = "Hello"
-    status = "200 OK"
-    headers = [("Content-Type", "text/html; charset=utf-8")]
-    start_response(status, headers)
-    return [body.encode("utf-8")]
 
 if len(sys.argv) > 1:
     # Get input from the command line, in case there is any...
