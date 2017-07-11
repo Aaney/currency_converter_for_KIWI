@@ -5,6 +5,7 @@ Author: Anestis Karasaridis
 
 Assignment link: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc602777c
 
+
 Changelog:
 
 Edit July 11th: Just found out about the built-in sys.argparse function... I've been sort of inventing the wheel on this with sys.argv... Well, the script would have worked the same if argparse was used, which might have helped with troubleshooting too, but basically the current code does the same (the arguments that are used here aren't predefined, as they would have been in the case of argparse usage).
