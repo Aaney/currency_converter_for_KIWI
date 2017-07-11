@@ -2,7 +2,7 @@
 
 # The script is meant to be used with a specific input, taking a) amount of
 # an input currency, and its currency code or symbol, or b) the amount
-# of an input currecy, its code/symbol and the output currencies' codes/symbols.
+# of an input currency, its code/symbol and the output currencies' codes/symbols.
 
 # The script works in two ways:
 # 1) It can be used via a CLI (Command Line Interface) in the following format:
@@ -10,7 +10,7 @@
 # C:\Projects\currency_converter.py --amount 0.9 --input_currency ¥ --output_currency AUD
 # C:\Projects\currency_converter.py --amount 10.92 --input_currency £
 # The input to the Command Line then looks e.g. on Windows 10 as follows:
-# C:\Python\Python36\python.exe "C:\Projects\currency_converter.py" --amount 100.0 --input_currency EUR --output_currency CZK
+# C:\Python\Python36\python.exe "C:\Work\currency_converter.py" --amount 10.0 --input_currency EUR --output_currency CZK
 
 # 2) By executing the script, local web API is activated on the address localhost:8080,
 # to which the user has to add the GET request suffix, in the following format:
@@ -20,24 +20,28 @@
 # The address then looks e.g. as follows:
 # localhost:8080/?amount=100.0&input_currency=EUR&output_currency=CZK
 
-# Five Python modules are used: urllib.request to get data from a website that provides
-# currency rates from the European Central Bank, and json for work with the
+# Six Python modules are used: urllib.request to get data from a website that provides
+# currency rates from the European Central Bank, urllib.error for handling issues with
+# connecting to the outside currency rate service, and json for work with the
 # required output format. The library sys is used to differentiate between the usage mode,
 # i.e. whether a CLI will be used, or if a web API is going to be activated (in case the CLI
 # mode is used the script takes input directly from the command line, and outputs right in the
 # terminal; in the other case the script is handled from a browser, and the output is displayed
 # in the browser window as plain text). The http.server module is used to create a local
 # server on which the web API of this script can run (in case the web API usage mode is activated by
-# running the script without any parametters in the command line). The urllib.parse module is
+# running the script without any parameters in the command line). The urllib.parse module is
 # used in the web API mode to parse the url (e.g. localhost:8080/?amount=100.0&input_currency=EUR)
-# into components, that are that are then fed to the main function, which calculates the currency
+# into components, that are then fed to the main function, which calculates the currency
 # conversion and returns a json output.
 
-import urllib.request, json, sys
+import urllib.request
+import urllib.error
+import json
+import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 
-PORT_NUMBER = 8080
+port_number = 8080
 raw = []
 
 
@@ -46,10 +50,9 @@ def convert(raw):
     # calculates the output and returns a JSON consisting of input amount, input currency, and
     # output currency or currencies and their converted amounts.
 
-
     # The variable currency_symbols consists of a dictionary created manually, with
     # information from http://www.xe.com/symbols.php and Wikipedia.
-    # Edit June 12th: After uploading to Github I noticed some of the currency symbols are not
+    # Edit June 12th: After uploading to GitHub I noticed some of the currency symbols are not
     # displayed correctly, despite working alright on my computer. Perhaps the currency symbol
     # categorization should be only limited to symbols present in most fonts, like $, €, ¥, and £.
     currency_symbols = {"$": "AUD,CAD,HKD,MXN,NZD,SGD,USD", "€": "EUR", "¥": "CNY,JPY",
@@ -120,7 +123,7 @@ def convert(raw):
         print("Wrong URL")
 
 
-class myHandler(BaseHTTPRequestHandler):
+class MyHandler(BaseHTTPRequestHandler):
     # This class handles any incoming request from the browser
     # The structure and content of this class is based on the example1.py on
     # the following website: https://www.acmesystems.it/python_httpd BaseHTTPRequestHandler
@@ -131,7 +134,6 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            # Send the html message
             k = parse_qs(self.path[2:])
             out = []
             for key, value in k.items():
@@ -148,10 +150,11 @@ class myHandler(BaseHTTPRequestHandler):
             print(convert(out))
             return
         except AttributeError:
-            # The occurs an AttributeError several times - this takes care of it
+            # There occurs an AttributeError several times - this takes care of it
             # not to print the error messages in the terminal (not sure at the moment how severe
             # issue this is).
             pass
+
 
 if len(sys.argv) > 1:
     # Get input from the command line, in case there is any...
@@ -160,21 +163,20 @@ if len(sys.argv) > 1:
 
 else:
     # ... or make a server and activate the web API - the code below is
-    # based on the same source as the myHandler class above, i.e. the following
+    # based on the same source as the MyHandler class above, i.e. the following
     # website: https://www.acmesystems.it/python_httpd
 
     try:
         # Create a web server and define the handler to manage the
         # incoming request
 
-        server = HTTPServer(('', PORT_NUMBER), myHandler)
-        print('Started httpserver on port ', PORT_NUMBER)
+        server = HTTPServer(('', port_number), MyHandler)
+        print('Started HTTPServer on port ', port_number)
 
         # Wait forever for incoming http requests
         server.serve_forever()
-        
+
     except KeyboardInterrupt:
         print('^C received, shutting down the web server')
         server.socket.close()
-
 
