@@ -1,6 +1,8 @@
 # currency_converter_for_KIWI
 Currency converter task for KIWI.com - June/July 2017
+
 Author: Anestis Karasaridis
+
 Assignment link: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc602777c
 
 Changelog:
