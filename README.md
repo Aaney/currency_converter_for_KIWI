@@ -8,6 +8,8 @@ Assignment link: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc6027
 
 Changelog:
 
+Edit July 14th 2018: The script is not working anymore since the old access to conversion rates' API is deprecated by now (fixer.io). The new form of this API is accessible after registration at data.fixer.io, functionality required for this script to work is however not available for free (specifically, it seems that it's not possible to get rates for a user-defined conversion base).
+
 Edit July 11th: Just found out about the built-in sys.argparse function... I've been sort of inventing the wheel on this with sys.argv... Well, the script would have worked the same if argparse was used, it might have helped with troubleshooting though (currently the arguments that are used here aren't predefined, as they would have been in the case of argparse usage).
 
 Edit July 9th: The web API sort of works fine on Python 3.6 - the first issue was that previously the output to the web browser wasn't encoded to utf-8, which led to the code not working via this interface. The second issue at the moment were numerous AttributeError messages in the terminal when using the web API - solved via a lousy except-pass statement. Also the web API output looks nicer now - instead of text/html its type is now application/json.
